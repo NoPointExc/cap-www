@@ -1,0 +1,31 @@
+.editor {
+  counter-reset: line;
+}
+
+.editor #codeArea {
+  outline: none;
+  height: 10px;
+  padding-left: 320px !important;
+}
+
+.editor pre {
+  padding-left: 320px !important;
+  color:rgb(88, 114, 228);
+}
+
+.editor .editorTimeStamp {
+  position: absolute;
+  left: 5px;
+  color: rgb(49, 96, 167);
+  text-align: left;
+  width: 320px;
+  font-weight: 1;
+}
+
+.editor .selectedLine {
+  color: rgb(62, 151, 99) !important;
+}
+
+.editor .backgroudLine {
+  color: #b3b8bd !important;
+}

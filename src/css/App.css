@@ -1,0 +1,32 @@
+.App {
+    margin: 0 auto;
+    /* border: 5px solid black; */
+}
+
+.app-panel {
+    border: 1px solid white;
+    overflow-x: hide;
+    margin: 0 auto;
+}
+
+.editor-panel {
+    height: 80vh;
+    width: 80vh;
+    overflow-y: scroll;
+}
+
+.left-panel {
+    width: 60vh;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    height: 100%;
+}
+
+.progressBar {
+    width: 100%;
+    margin-top: 10px;
+}
