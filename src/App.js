@@ -2,6 +2,8 @@ import "./css/App.css";
 import React from "react";
 import Button from "react-bootstrap/Button"
 import ReactPlayer from "react-player";
+import { withCookies, Cookies } from 'react-cookie';
+import { instanceOf } from 'prop-types';
 
 import MyNavBar from "./MyNavbar";
 import UploadPanel from "./UploadPanel";
@@ -11,7 +13,11 @@ import CaptionText from "./lib/CaptionText";
 
 // TODO make it adjustable
 const CHARS_EACH_LINE = 18;
-export default class App extends React.Component {
+class App extends React.Component {
+
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    };
 
     constructor(props) {
         super(props);
@@ -212,3 +218,5 @@ export default class App extends React.Component {
         );
     }
 }
+
+export default withCookies(App);

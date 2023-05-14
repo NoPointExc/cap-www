@@ -3,14 +3,19 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import "bootstrap/dist/css/bootstrap.css";
 import App from "./App";
+import { CookiesProvider } from 'react-cookie';
 
 
 
 const rootElement = document.getElementById("root");
 
 
+
+
 ReactDOM.render(
-  <App />,
+  <CookiesProvider>
+    <App />
+  </CookiesProvider>,
   rootElement
 );
 
