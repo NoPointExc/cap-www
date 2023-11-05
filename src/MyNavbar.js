@@ -31,21 +31,23 @@ class MyNavBar extends React.Component {
                 <Button
                     bg="dark"
                     variant="dark"
-                    href={DOMAIN + "/user/login-redirect"}
+                    href={`${DOMAIN}/user/login-redirect`}
                 >
                     <img src="btn_google_signin.png" />
                 </Button>
             </Nav.Item>
         );
         if (this.state.loggedInUser) {
+            // handle logged_in_user timeout, proxy return error 401 Unauthorized
+            // {"detail":"Authorization denied. Please log-out and try to log-ing again."}
             accountButton = (
                 <NavDropdown
                     bg="dark"
                     variant="dark"
                     title={this.state.loggedInUser}
                     id="collapsible-nav-dropdown"
-                >
-                    <NavDropdown.Item as="a" href={DOMAIN + "/user/logout"}>
+                >   
+                    <NavDropdown.Item as="a" href={`${DOMAIN}/user/logout`}>
                         Sign out
                     </NavDropdown.Item>
                 </NavDropdown>

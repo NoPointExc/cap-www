@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import "bootstrap/dist/css/bootstrap.css";
-import App from "./App";
+import App from "./Whisper";
 import { CookiesProvider } from 'react-cookie';
 
 
