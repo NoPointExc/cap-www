@@ -14,14 +14,18 @@ function SideBar(props) {
         { key: '#video', text: '• Video' },
         { key: '#transcripts', text: '• Your Transcripts' },
     ];
+    
 
-    return (<div>
-        {navItems.map(
-            (item) => (
-                <Nav.Link eventKey={item.key} className="side-bar">{item.text}</Nav.Link>
-            )
-        )}
-    </div>);
+    return (
+        <Nav className="flex-column" variant="pills" defaultActiveKey="#channel" onSelect={props.onTabSelect}>
+            {navItems.map(
+                (item) => (
+                    <div>
+                        <Nav.Link eventKey={item.key} className="side-bar">{item.text}</Nav.Link>
+                    </div>
+                )
+            )}
+        </Nav>);
 }
 
 export default SideBar;

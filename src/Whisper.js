@@ -14,22 +14,37 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 class App extends React.Component {
-    
+    constructor(props) {
+        super(props);
+        this.state = {
+            showTab: "#channel",
+        };
+    }
+
     static propTypes = {
         cookies: instanceOf(Cookies).isRequired
     };
 
+    onTabSelect = (selectedTab) => {
+        this.setState({
+            showTab: selectedTab
+        });
+    }
+
     render() {
+        let tabToContent = new Map();
+        tabToContent.set("#channel", <Col sm={5}><Channel className="main" /></Col>);
+        tabToContent.set("#video", <Col sm={5}><Video className="main" /></Col>);
+        tabToContent.set("#transcripts", <Col sm={8}><Transcripts className="main" /></Col>);
+
         return (
             <div className="App">
                 <MyNavBar {...this.props}/>
                 <div className="main-content">
                     <Container>
                         <Row>
-                            <Col sm={2}><SideBar className="side" /></Col>
-                            {/* <Col sm={5}><Channel className="main" /></Col> */}
-                            {/* <Col sm={5}><Video className="main" /></Col> */}
-                            <Col sm={8}><Transcripts className="main" /></Col>
+                            <Col sm={2}><SideBar className="side" onTabSelect={this.onTabSelect}/></Col>
+                            {tabToContent.get(this.state.showTab)}
                         </Row>
                     </Container>
                 </div>

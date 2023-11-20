@@ -12,7 +12,7 @@ function getPageItems(pageNum, activeId) {
     let items = [];
     items.push(
         <Pagination.Item key={0} active={false}>
-            previous
+            Previous
         </Pagination.Item>,
     );
     
@@ -26,7 +26,7 @@ function getPageItems(pageNum, activeId) {
 
     items.push(
         <Pagination.Item key={-1} active={false}>
-            next
+            Next
         </Pagination.Item>,
     );
 
@@ -37,8 +37,7 @@ function getPageItems(pageNum, activeId) {
 
 function Transcripts(props) {
 
-    let items = getPageItems(5, 2);
-
+    let items = getPageItems(3, 2);
 
     return (
         <Form>
