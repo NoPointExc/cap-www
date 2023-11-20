@@ -3,6 +3,7 @@ import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
 import MyNavBar from "./MyNavbar";
 import SideBar from "./SideBar";
+import Channel from "./Channel";
 import React from "react";
 
 class App extends React.Component {
@@ -18,6 +19,7 @@ class App extends React.Component {
                 <div className="main-content">
                 {/* repalce this */}
                     <SideBar/>
+                    <Channel/>
                 </div>
             </div>
         );
