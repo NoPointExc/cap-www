@@ -3,42 +3,27 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-function Channel(props) {
+
+function Video(props) {
+
     return (
         <Form>
-            <div class="channel-name-form">
+            <div class="video-url-form">
                 <Form.Label>Channel Name</Form.Label>
                 <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+                    <InputGroup.Text id="basic-addon1">https://youtube.com/watch?v=</InputGroup.Text>
                     <Form.Control
-                        placeholder="索菲亚一斤半"
-                        aria-label="channelname"
+                        placeholder="HXDZ74cGz1g&t=174s"
+                        aria-label="video-url"
                         aria-describedby="basic-addon1"
                     />
                 </InputGroup>
             </div>
-            <br/>
-            <div className="on-off-form">
-                <Container>
-                    <Row>
-                        <Col><Form.Label>On/off</Form.Label></Col>
-                        <Col><Form.Check type="switch" id="on-off" /></Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Text muted>
-                            When on, caption.io will follow and transcript new videos from this channel.
-                            </Form.Text>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-            <br/>
+            <br />
             <div className="auto-upload-form">
                 <Container>
                     <Row>
@@ -48,7 +33,7 @@ function Channel(props) {
                     <Row>
                         <Col>
                             <Form.Text id="onoffHelp" muted>
-                                When on, caption.io upload transcript to your channel directly(Permission required). When disabled, you need to download it manually.
+                                When on, the transcript will be uploaded to Youtube directly(Permission required)
                             </Form.Text>
                         </Col>
                     </Row>
@@ -68,7 +53,7 @@ function Channel(props) {
                     The primary language used in this channel.
                 </Form.Text>
             </div>
-            <br/>
+            <br />
             <div class="output-form">
                 <Form.Label>Output File</Form.Label><br />
                 <Form.Select>
@@ -78,10 +63,10 @@ function Channel(props) {
                 </Form.Select>
                 <br />
             </div>
-            <br/>
+            <br />
             <div class="promotes-form">
                 <Form.Label>Promotes</Form.Label>
-                <br/>
+                <br />
                 <Form.Text id="promotes-help" muted>
                     Give AI some context about this video so AI could transcript better(e.g common terms, people name, topics.)
                 </Form.Text>
@@ -89,16 +74,16 @@ function Channel(props) {
                     <Form.Control as="textarea" aria-label="With textarea" />
                 </InputGroup>
             </div>
-            <br/>
+            <br />
             <div class="submit-form">
                 <Container>
                     <Row>
-                        <Col md={9}>
-                            <Button variant="primary" type="submit">
-                                Save and Follow the Channel
+                        <Col md={6}>
+                            <Button variant="success" type="submit">
+                                Transcript Now
                             </Button>
                         </Col>
-                        <Col md={{ span: 2, offset: 1}}>
+                        <Col md={{ span: 3, offset: 3 }}>
                             <Button variant="danger" type="submit">
                                 Delete
                             </Button>
@@ -108,6 +93,7 @@ function Channel(props) {
             </div>
         </Form>
     );
+
 }
 
-export default Channel;
+export default Video;
