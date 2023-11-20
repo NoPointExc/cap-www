@@ -6,6 +6,10 @@ import SideBar from "./SideBar";
 import Channel from "./Channel";
 import React from "react";
 
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 class App extends React.Component {
     
     static propTypes = {
@@ -17,9 +21,12 @@ class App extends React.Component {
             <div className="App">
                 <MyNavBar {...this.props}/>
                 <div className="main-content">
-                {/* repalce this */}
-                    <SideBar/>
-                    <Channel/>
+                    <Container>
+                        <Row>
+                            <Col sm={3}><SideBar className="side" /></Col>
+                            <Col sm={5}><Channel className="main" /></Col>
+                        </Row>
+                    </Container>
                 </div>
             </div>
         );
