@@ -106,7 +106,7 @@ function Transcripts(props) {
 
     return (
         <Form>
-            <div class="transcripts-form">
+            <div id="transcripts-form">
                 <Container >
                     <Row>
                         <Col xs={1}>
@@ -125,7 +125,7 @@ function Transcripts(props) {
             <br/>
             <Pagination size="sm">{getPageItems(lastPage, activePage, onPageChange)}</Pagination>
             <br />
-            <div class="submit-form">
+            <div id="submit-form">
                 <Container>
                     <Row>
                         <Col>
