@@ -6,30 +6,32 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Pagination from 'react-bootstrap/Pagination';
 
-const allId = [1,2,3];
+const ALL_ID = [1,2,3];
+const NEXT_PAGE = -1;
+const PREV_PAGE = 0;
 
-
-function getPageItems(pageNum, activeId) {
+function getPageItems(lastPage, activePage, onPageChange) {
     let items = [];
-    items.push(
-        <Pagination.Item key={0} active={false}>
-            Previous
-        </Pagination.Item>,
-    );
     
-    for (let number = 1; number <= pageNum; number++) {
-        items.push(
-            <Pagination.Item key={number} active={number === activeId}>
-                {number}
-            </Pagination.Item>,
-        );
-    }
+    for (let page = 0; page <= lastPage + 1; page++) {
+        let pageKey = page <= lastPage ? page : -1;
+        let pageText = page;
+        if (pageKey == PREV_PAGE) {
+            pageText = "Previous";
+        } else if (pageKey == NEXT_PAGE) {
+            pageText = "Next";
+        }
 
-    items.push(
-        <Pagination.Item key={-1} active={false}>
-            Next
-        </Pagination.Item>,
-    );
+        let onPageClicked = (_event) => {
+            onPageChange(pageKey);
+        }
+
+        let item = <Pagination.Item key={pageKey} active={pageKey === activePage} onClick={onPageClicked}>
+            {pageText}
+        </Pagination.Item>;
+
+        items.push(item);
+    }
 
     return items;
 }
@@ -61,6 +63,10 @@ function getRow(id, videoTitle, transcript, autoUpload, status, isSelected, onSe
 
 function Transcripts(props) {
     const [selected, setSelected] = useState(new Set());
+    const [activePage, setActivePage] = useState(1);
+
+    // TODO 
+    const lastPage = 6;
 
     let onSelectOne = (id ,event) => {
         if (event.target.checked) {
@@ -76,7 +82,7 @@ function Transcripts(props) {
 
     let onSelectAll = (event) => {
         if (event.target.checked) {
-            const newSelected = new Set([...selected, ...allId]);
+            const newSelected = new Set([...selected, ...ALL_ID]);
             setSelected(newSelected);
         } else {
             const newSelected = new Set();
@@ -84,12 +90,24 @@ function Transcripts(props) {
         }
     }
 
+    let onPageChange = (clickedPage) => {
+        console.log("clicked page" + clickedPage);
+        let newPage = clickedPage;
+        if (clickedPage == NEXT_PAGE) {
+            newPage = Math.min(activePage + 1, lastPage);
+        } else if (clickedPage == PREV_PAGE) {
+            newPage = Math.max(activePage -1, 1);
+        }
+
+        setActivePage(newPage);
+    }
+
     
 
     return (
         <Form>
             <div class="transcripts-form">
-                <Container>
+                <Container >
                     <Row>
                         <Col xs={1}>
                             <Form.Check inline name="group1" type="checkbox" id="#selectAll" onChange={onSelectAll}/>
@@ -105,7 +123,7 @@ function Transcripts(props) {
                 </Container>
             </div>
             <br/>
-            <Pagination size="sm">{getPageItems(3, 2)}</Pagination>
+            <Pagination size="sm">{getPageItems(lastPage, activePage, onPageChange)}</Pagination>
             <br />
             <div class="submit-form">
                 <Container>
