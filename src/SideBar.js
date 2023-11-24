@@ -10,8 +10,8 @@ function SideBar(props) {
     };
 
     const navItems = [
-        { key: '#channel', text: '• Channel', },
-        { key: '#video', text: '• Video' },
+        { key: '#channel', text: '• Youtube Channel', },
+        { key: '#video', text: '• Youtube Video' },
         { key: '#transcripts', text: '• Your Transcripts' },
     ];
     

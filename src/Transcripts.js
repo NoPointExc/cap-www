@@ -52,7 +52,7 @@ function getRow(id, videoTitle, transcript, autoUpload, status, isSelected, onSe
             <Col xs={1}>
                 <Form.Check inline name="group1" type="checkbox" id={"#" + id} checked={isSelected} onChange={onCheckboxChange}/>
             </Col>
-            <Col>{videoTitle}</Col>
+            <Col> <a href="https://www.example.com" target="_blank">{videoTitle}</a></Col>
             <Col className="d-flex align-items-center justify-content-center"><a href="https://www.example.com" target="_blank">{transcript}</a></Col>
             <Col className="d-flex align-items-center justify-content-center">{uploadSign}</Col>
             <Col className="d-flex align-items-center justify-content-center">{status}</Col>

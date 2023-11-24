@@ -13,7 +13,7 @@ function Video(props) {
     return (
         <Form>
             <div class="video-url-form">
-                <Form.Label>Channel Name</Form.Label>
+                <Form.Label>Video Name</Form.Label>
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">https://youtube.com/watch?v=</InputGroup.Text>
                     <Form.Control
@@ -57,8 +57,7 @@ function Video(props) {
             <div class="output-form">
                 <Form.Label>Output File</Form.Label><br />
                 <Form.Select>
-                    <option selected>srt</option>
-                    <option value="1">srt</option>
+                    <option selected value="1">srt</option>
                     <option value="2">json</option>
                 </Form.Select>
                 <br />
