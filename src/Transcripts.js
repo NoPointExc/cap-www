@@ -47,7 +47,8 @@ function getPageItems(lastPage, activePage, onPageChange) {
 
 
 
-function getRow(workflow, isSelected, onSelectOne) {
+function getRow(workflow, selected, onSelectOne) {
+    const isSelected = selected.has(workflow.id);
     const videoTitle = workflow.video_uuid ?? "null"; // workflow.video_title
     const transcript = workflow.transcript_fmts.join(",") ?? "empty";
 
@@ -63,7 +64,13 @@ function getRow(workflow, isSelected, onSelectOne) {
     return <div>
         <Row>
             <Col xs={1}>
-                <Form.Check inline name="group1" type="checkbox" id={`#${workflow.id}`} checked={isSelected} onChange={onCheckboxChange}/>
+                <Form.Check
+                    inline name="group1"
+                    type="checkbox"
+                    id={`#${workflow.id}`}
+                    checked={selected.has(workflow.id)}
+                    onChange={onCheckboxChange}
+                />
             </Col>
             <Col> 
                 <a href="https://www.example.com" target="_blank"> {videoTitle}</a>
@@ -122,7 +129,9 @@ function Transcripts(props) {
 
     let onSelectAll = (event) => {
         if (event.target.checked) {
-            const newSelected = new Set([...selected, ...ALL_ID]);
+            const newSelected = new Set((workflows ?? []).map(
+                w => w.id
+            ));
             setSelected(newSelected);
         } else {
             const newSelected = new Set();
@@ -168,7 +177,7 @@ function Transcripts(props) {
         },
         [activePage]
     );
-
+    
     return (
         <Form>
             <div id="transcripts-form">
@@ -184,7 +193,7 @@ function Transcripts(props) {
                     </Row>
                     {
                         selectWorkflowByPage(activePage, workflows).map((w) => (
-                            getRow(w, selected.has(w.workflow_id), onSelectOne)
+                            getRow(w, selected, onSelectOne)
                         ))
                     }
                 </Container>
