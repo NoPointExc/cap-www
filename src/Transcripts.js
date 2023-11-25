@@ -11,11 +11,16 @@ import Row from 'react-bootstrap/Row';
 const ALL_ID = [1,2,3];
 const NEXT_PAGE = -1;
 const PREV_PAGE = 0;
+const ROWS_PER_PAGE = 10;
 const VIDEO_WORKFLOW_TYPE = 1;
 
 
 function getPageItems(lastPage, activePage, onPageChange) {
     let items = [];
+
+    if (lastPage == 0) {
+        return items;
+    }
     
     for (let page = 0; page <= lastPage + 1; page++) {
         let pageKey = page <= lastPage ? page : -1;
@@ -77,13 +82,31 @@ function getRow(workflow, isSelected, onSelectOne) {
     </div>
 }
 
+function selectWorkflowByPage(activePage, workflows) {
+    let selectedWorkflows = [];
+    if (workflows !== null && workflows !== undefined) {
+        const startIndex = Math.max(0, activePage * ROWS_PER_PAGE - ROWS_PER_PAGE); //incusive
+        const endIndex = Math.min(workflows.length, activePage * ROWS_PER_PAGE); // exclusive
+        console.log("start=" + startIndex + " end=" + endIndex);
+        selectedWorkflows = workflows.slice(startIndex, endIndex);
+    }
+    return selectedWorkflows;
+}
+
+function getLastPage(workflows) {
+    let lastpage = 0;
+    if (workflows !== null && workflows !== undefined) {
+        lastpage = Math.ceil(workflows.length / ROWS_PER_PAGE);
+    }
+    return lastpage;
+}
+
 function Transcripts(props) {
     const [selected, setSelected] = useState(new Set());
     const [activePage, setActivePage] = useState(1);
     const [workflows, setWorkflows] = useState([]);
 
-    // TODO 
-    const lastPage = 6;
+    const lastPage = getLastPage(workflows);
 
     let onSelectOne = (id ,event) => {
         if (event.target.checked) {
@@ -160,7 +183,7 @@ function Transcripts(props) {
                         <Col className="d-flex align-items-center justify-content-center">Status</Col>
                     </Row>
                     {
-                        (workflows ?? []).map((w) => (
+                        selectWorkflowByPage(activePage, workflows).map((w) => (
                             getRow(w, selected.has(w.workflow_id), onSelectOne)
                         ))
                     }
