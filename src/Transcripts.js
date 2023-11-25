@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import { DOMAIN } from "./lib/Config";
 import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Pagination from 'react-bootstrap/Pagination';
+import React, { useEffect, useState } from "react";
+import Row from 'react-bootstrap/Row';
+
 
 const ALL_ID = [1,2,3];
 const NEXT_PAGE = -1;
 const PREV_PAGE = 0;
+const VIDEO_WORKFLOW_TYPE = 1;
+
 
 function getPageItems(lastPage, activePage, onPageChange) {
     let items = [];
@@ -16,9 +20,9 @@ function getPageItems(lastPage, activePage, onPageChange) {
     for (let page = 0; page <= lastPage + 1; page++) {
         let pageKey = page <= lastPage ? page : -1;
         let pageText = page;
-        if (pageKey == PREV_PAGE) {
+        if (pageKey === PREV_PAGE) {
             pageText = "Previous";
-        } else if (pageKey == NEXT_PAGE) {
+        } else if (pageKey === NEXT_PAGE) {
             pageText = "Next";
         }
 
@@ -38,24 +42,36 @@ function getPageItems(lastPage, activePage, onPageChange) {
 
 
 
-function getRow(id, videoTitle, transcript, autoUpload, status, isSelected, onSelectOne) {
+function getRow(workflow, isSelected, onSelectOne) {
+    const videoTitle = workflow.video_uuid ?? "null"; // workflow.video_title
+    const transcript = workflow.transcript_fmts.join(",") ?? "empty";
+
     let uploadSign = <p style={{ color: "red" }}>x</p>;
-    if (autoUpload) {
+    if (workflow.auto_upload.toLowerCase() === "true") {
         uploadSign = <p style={{ color: "green" }}>✓</p>;
     }
     const onCheckboxChange = (event)=> {
-        onSelectOne(id, event);
+        onSelectOne(workflow.id, event);
     };
+
 
     return <div>
         <Row>
             <Col xs={1}>
-                <Form.Check inline name="group1" type="checkbox" id={"#" + id} checked={isSelected} onChange={onCheckboxChange}/>
+                <Form.Check inline name="group1" type="checkbox" id={`#${workflow.id}`} checked={isSelected} onChange={onCheckboxChange}/>
             </Col>
-            <Col> <a href="https://www.example.com" target="_blank">{videoTitle}</a></Col>
-            <Col className="d-flex align-items-center justify-content-center"><a href="https://www.example.com" target="_blank">{transcript}</a></Col>
-            <Col className="d-flex align-items-center justify-content-center">{uploadSign}</Col>
-            <Col className="d-flex align-items-center justify-content-center">{status}</Col>
+            <Col> 
+                <a href="https://www.example.com" target="_blank"> {videoTitle}</a>
+            </Col>
+            <Col className="d-flex align-items-center justify-content-center">
+                <a href="https://www.example.com" target="_blank">{transcript}</a>
+            </Col>
+            <Col className="d-flex align-items-center justify-content-center">
+                {uploadSign}
+            </Col>
+            <Col className="d-flex align-items-center justify-content-center">
+                {workflow.status}
+            </Col>
         </Row>
         <br/>
     </div>
@@ -64,6 +80,7 @@ function getRow(id, videoTitle, transcript, autoUpload, status, isSelected, onSe
 function Transcripts(props) {
     const [selected, setSelected] = useState(new Set());
     const [activePage, setActivePage] = useState(1);
+    const [workflows, setWorkflows] = useState([]);
 
     // TODO 
     const lastPage = 6;
@@ -93,16 +110,41 @@ function Transcripts(props) {
     let onPageChange = (clickedPage) => {
         console.log("clicked page" + clickedPage);
         let newPage = clickedPage;
-        if (clickedPage == NEXT_PAGE) {
+        if (clickedPage === NEXT_PAGE) {
             newPage = Math.min(activePage + 1, lastPage);
-        } else if (clickedPage == PREV_PAGE) {
+        } else if (clickedPage === PREV_PAGE) {
             newPage = Math.max(activePage -1, 1);
         }
 
         setActivePage(newPage);
     }
 
-    
+    useEffect(
+        () => {
+            async function fetchWorkflows() {
+                const url = `${DOMAIN}/workflow/list?type=${VIDEO_WORKFLOW_TYPE}`;
+                const workflows = await fetch(
+                    url,
+                    {
+                        method: "POST",
+                        headers: { "accept": "application/json" },
+                        credentials: "include",
+                    },
+                )
+                    .then(response => response.json())
+                    .catch((error) => {
+                        console.log(`Failed to fetch from ${url} with error: ${error}`);
+                        setWorkflows([]);
+                });
+
+                setWorkflows(workflows);
+            }
+
+
+            fetchWorkflows()
+        },
+        [activePage]
+    );
 
     return (
         <Form>
@@ -117,9 +159,11 @@ function Transcripts(props) {
                         <Col className="d-flex align-items-center justify-content-center">Auto-Uploaded</Col>
                         <Col className="d-flex align-items-center justify-content-center">Status</Col>
                     </Row>
-                    {getRow(1, "挑酒像在看天书？秒懂威士忌酒标的速成指南", ".srt", false, "done", selected.has(1), onSelectOne)}
-                    {getRow(2, "在家也能调酒？只要十瓶就能开张！手把手教你打造家庭吧台", ".srt", false, "done", selected.has(2), onSelectOne)}
-                    {getRow(3, "调酒很难吗？三分钟一杯！家庭调酒之金酒篇 | Best Gin-Based Cocktails To Make At Home | Sophia1.5", ".srt", false, "done", selected.has(3), onSelectOne)}
+                    {
+                        (workflows ?? []).map((w) => (
+                            getRow(w, selected.has(w.workflow_id), onSelectOne)
+                        ))
+                    }
                 </Container>
             </div>
             <br/>
