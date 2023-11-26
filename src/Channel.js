@@ -61,7 +61,7 @@ function Channel(props) {
                     <option selected>auto-detect</option>
                     <option value="1">English</option>
                     <option value="2">简体中文</option>
-                    <option value="3">繁体中文</option>
+                    <option value="3">繁體中文</option>
                 </Form.Select>
                 <br />
                 <Form.Text id="language-help" muted>
