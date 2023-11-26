@@ -1,3 +1,4 @@
+export const VIDEO_WORKFLOW_TYPE = 1;
 export const transcriptJSON = `{
   "jobName": "HelloWordTest",
   "accountId": "289738177161",

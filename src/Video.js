@@ -1,22 +1,64 @@
-import React from "react";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { DOMAIN } from "./lib/Config";
+import { VIDEO_WORKFLOW_TYPE } from "./lib/Constants";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import React, { useState } from "react";
+import Row from "react-bootstrap/Row";
 
 
 function Video(props) {
+    const [formData, setFormData] = useState(
+        {
+            video_uuid: null,
+            auto_upload: false,
+            language: null,
+            transcript_fmts: ["srt"],
+            promotes: null
+        }
+    );
+    
+    const onFormSubmit = async (event) => {
+        event.preventDefault(); // Prevents the default form submission behavior
+
+        const arg_json_str = JSON.stringify(formData);
+        const url = `${DOMAIN}/workflow/add?type=${VIDEO_WORKFLOW_TYPE}&args=${arg_json_str}`;
+        const rsp = await fetch(
+            url,
+            {
+                method: "POST",
+                headers: { "accept": "application/json" },
+                credentials: "include",
+            },
+        )
+            .then(response => response.json())
+            .catch((error) => {
+                console.log(`Failed to fetch from ${url} with error: ${error}`);
+        });
+
+        console.log(`workflow_id=${rsp.workflow_id} ?? null`);
+    };
+
+    const onFormChange = (event) => {
+        // Update the form data state when input values change
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value,
+        });
+    };
 
     return (
-        <Form>
+        <Form onSubmit={onFormSubmit}>
             <div class="video-url-form">
                 <Form.Label>Video Name</Form.Label>
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">https://youtube.com/watch?v=</InputGroup.Text>
                     <Form.Control
+                        name="video_uuid"
+                        value={formData.video_uuid}
+                        onChange={onFormChange}
                         placeholder="HXDZ74cGz1g&t=174s"
                         aria-label="video-url"
                         aria-describedby="basic-addon1"
@@ -28,7 +70,14 @@ function Video(props) {
                 <Container>
                     <Row>
                         <Col><Form.Label>Auto Upload</Form.Label></Col>
-                        <Col><Form.Check type="switch" id="auto-upload" /></Col>
+                        <Col>
+                            <Form.Check
+                                type="switch"
+                                name="auto_upload"
+                                value={formData.auto_upload}
+                                onchange={onFormChange}
+                            />
+                        </Col>
                     </Row>
                     <Row>
                         <Col>
@@ -42,11 +91,15 @@ function Video(props) {
             <br/>
             <div class="language-form">
                 <Form.Label>Language</Form.Label><br />
-                <Form.Select>
-                    <option selected>auto-detect</option>
-                    <option value="1">English</option>
-                    <option value="2">简体中文</option>
-                    <option value="3">繁體中文</option>
+                <Form.Select
+                    name="language"
+                    value={formData.language}
+                    onChange={onFormChange}
+                >
+                    <option selected value={null}>auto-detect</option>
+                    <option value="en">English</option>
+                    <option value="zh">简体中文</option>
+                    <option value="zh-tw">繁體中文</option>
                 </Form.Select>
                 <br />
                 <Form.Text id="language-help" muted>
@@ -56,9 +109,13 @@ function Video(props) {
             <br />
             <div class="output-form">
                 <Form.Label>Output File</Form.Label><br />
-                <Form.Select>
-                    <option selected value="1">srt</option>
-                    <option value="2">json</option>
+                <Form.Select
+                    name="transcript_fmts"
+                    value={formData.transcript_fmts}
+                    onChange={onFormChange}
+                >
+                    <option selected value="srt">srt</option>
+                    <option value="json">json</option>
                 </Form.Select>
                 <br />
             </div>
@@ -70,7 +127,13 @@ function Video(props) {
                     Give AI some context about this video so AI could transcript better(e.g common terms, people name, topics.)
                 </Form.Text>
                 <InputGroup>
-                    <Form.Control as="textarea" aria-label="With textarea" />
+                    <Form.Control
+                        name="promotes"
+                        value={formData.promotes}
+                        onChange={onFormChange}
+                        as="textarea"
+                        aria-label="With textarea"
+                    />
                 </InputGroup>
             </div>
             <br />

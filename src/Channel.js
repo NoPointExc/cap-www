@@ -1,12 +1,11 @@
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 import React from "react";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
+import Row from "react-bootstrap/Row";
 
-
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 function Channel(props) {
     return (
@@ -22,7 +21,7 @@ function Channel(props) {
                     />
                 </InputGroup>
             </div>
-            <br/>
+            <br />
             <div className="on-off-form">
                 <Container>
                     <Row>
@@ -38,7 +37,7 @@ function Channel(props) {
                     </Row>
                 </Container>
             </div>
-            <br/>
+            <br />
             <div className="auto-upload-form">
                 <Container>
                     <Row>
@@ -54,7 +53,7 @@ function Channel(props) {
                     </Row>
                 </Container>
             </div>
-            <br/>
+            <br />
             <div class="language-form">
                 <Form.Label>Language</Form.Label><br />
                 <Form.Select>
@@ -68,7 +67,7 @@ function Channel(props) {
                     The primary language used in this channel.
                 </Form.Text>
             </div>
-            <br/>
+            <br />
             <div class="output-form">
                 <Form.Label>Output File</Form.Label><br />
                 <Form.Select>
@@ -78,10 +77,10 @@ function Channel(props) {
                 </Form.Select>
                 <br />
             </div>
-            <br/>
+            <br />
             <div class="promotes-form">
                 <Form.Label>Promotes</Form.Label>
-                <br/>
+                <br />
                 <Form.Text id="promotes-help" muted>
                     Give AI some context about this video so AI could transcript better(e.g common terms, people name, topics.)
                 </Form.Text>
@@ -89,7 +88,7 @@ function Channel(props) {
                     <Form.Control as="textarea" aria-label="With textarea" />
                 </InputGroup>
             </div>
-            <br/>
+            <br />
             <div class="submit-form">
                 <Container>
                     <Row>

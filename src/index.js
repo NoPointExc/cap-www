@@ -1,15 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import reportWebVitals from './reportWebVitals';
 import "bootstrap/dist/css/bootstrap.css";
+import { CookiesProvider } from "react-cookie";
 import App from "./Whisper";
-import { CookiesProvider } from 'react-cookie';
-
+import React from "react";
+import ReactDOM from "react-dom";
+import reportWebVitals from "./reportWebVitals";
 
 
 const rootElement = document.getElementById("root");
-
-
 
 
 ReactDOM.render(

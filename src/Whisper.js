@@ -1,17 +1,16 @@
 import "./css/App.css";
-import React from "react";
-import { instanceOf } from 'prop-types';
-import { withCookies, Cookies } from 'react-cookie';
-import MyNavBar from "./MyNavbar";
-import SideBar from "./SideBar";
+import { instanceOf } from "prop-types";
+import { withCookies, Cookies } from "react-cookie";
 import Channel from "./Channel";
-import Video from "./Video";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import MyNavBar from "./MyNavbar";
+import React from "react";
+import Row from "react-bootstrap/Row";
+import SideBar from "./SideBar";
 import Transcripts from "./Transcripts";
+import Video from "./Video";
 
-
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 class App extends React.Component {
     constructor(props) {

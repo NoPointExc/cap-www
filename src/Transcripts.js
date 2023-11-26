@@ -1,4 +1,5 @@
 import { DOMAIN } from "./lib/Config";
+import { VIDEO_WORKFLOW_TYPE } from "./lib/Constants";
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -7,12 +8,10 @@ import Pagination from 'react-bootstrap/Pagination';
 import React, { useEffect, useState } from "react";
 import Row from 'react-bootstrap/Row';
 
-
 const ALL_ID = [1,2,3];
 const NEXT_PAGE = -1;
 const PREV_PAGE = 0;
 const ROWS_PER_PAGE = 10;
-const VIDEO_WORKFLOW_TYPE = 1;
 
 
 function getPageItems(lastPage, activePage, onPageChange) {
