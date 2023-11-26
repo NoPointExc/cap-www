@@ -153,11 +153,6 @@ function Video(props) {
                                 Transcript Now
                             </Button>
                         </Col>
-                        <Col md={{ span: 3, offset: 3 }}>
-                            <Button variant="danger" type="submit">
-                                Delete
-                            </Button>
-                        </Col>
                     </Row>
                 </Container>
             </div>
