@@ -49,6 +49,14 @@ function Video(props) {
         });
     };
 
+    const onCheckChange = (event) => {
+        // Update the form data state when input values change
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.checked,
+        });
+    };
+
     return (
         <Form onSubmit={onFormSubmit}>
             <div class="video-url-form">
@@ -74,8 +82,8 @@ function Video(props) {
                             <Form.Check
                                 type="switch"
                                 name="auto_upload"
-                                value={formData.auto_upload}
-                                onchange={onFormChange}
+                                checked={formData.auto_upload}
+                                onChange={onCheckChange}
                             />
                         </Col>
                     </Row>
