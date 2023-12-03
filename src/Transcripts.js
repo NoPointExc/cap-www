@@ -52,7 +52,7 @@ function getRow(workflow, selected, onSelectOne) {
     const transcript = workflow.transcript_fmts.join(",") ?? "empty";
 
     let uploadSign = <p style={{ color: "red" }}>x</p>;
-    if (workflow.auto_upload.toLowerCase() === "true") {
+    if (workflow.auto_upload === "true") {
         uploadSign = <p style={{ color: "green" }}>✓</p>;
     }
     const onCheckboxChange = (event)=> {
