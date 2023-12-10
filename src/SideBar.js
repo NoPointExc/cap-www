@@ -5,9 +5,6 @@ import Nav from "react-bootstrap/Nav";
 
 
 function SideBar(props) {
-    const navLinkStyle = {
-        color: 'aliceblue',
-    };
 
     const navItems = [
         { key: '#channel', text: '• Youtube Channel', },
