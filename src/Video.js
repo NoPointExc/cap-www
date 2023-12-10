@@ -74,7 +74,7 @@ function Video(props) {
                 </InputGroup>
             </div>
             <br />
-            <div className="auto-upload-form">
+            {/* <div className="auto-upload-form">
                 <Container>
                     <Row>
                         <Col><Form.Label>Auto Upload</Form.Label></Col>
@@ -95,7 +95,7 @@ function Video(props) {
                         </Col>
                     </Row>
                 </Container>
-            </div>
+            </div> */}
             <br/>
             <div class="language-form">
                 <Form.Label>Language</Form.Label><br />
