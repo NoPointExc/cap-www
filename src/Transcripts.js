@@ -30,7 +30,7 @@ function formatTime(unixtime) {
     const ONE_WEEK_IN_MS = 7 * ONE_DAY_IN_MS;
     const ONE_YEAR_IN_MS = 365 * ONE_DAY_IN_MS;
 
-    let descriptive = Math.ceil((now.getTime() - unixtime * 1000) / ONE_YEAR_IN_MS) + " year(s) ago";
+    let descriptive = Math.ceil((now.getTime() - unixtime * 1000) / ONE_YEAR_IN_MS) + " years ago";
     if (time.getDate() === now.getDate() && time.getMonth() === now.getMonth()) {
         // same day, return a time.
         return time.toLocaleTimeString();
@@ -200,7 +200,7 @@ function Transcripts(props) {
                         setWorkflows([]);
                 });
                 if (workflows) {
-                    workflows.sort((w1, w2) => w1.create_at - w2.create_at);
+                    workflows.sort((w1, w2) => w2.create_at - w1.create_at);
                     setWorkflows(workflows);
                 }
             }

@@ -49,13 +49,13 @@ function Video(props) {
         });
     };
 
-    const onCheckChange = (event) => {
-        // Update the form data state when input values change
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.checked,
-        });
-    };
+    // const onCheckChange = (event) => {
+    //     // Update the form data state when input values change
+    //     setFormData({
+    //         ...formData,
+    //         [event.target.name]: event.target.checked,
+    //     });
+    // };
 
     return (
         <Form onSubmit={onFormSubmit}>
