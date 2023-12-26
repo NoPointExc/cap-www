@@ -23,6 +23,7 @@ const STATUS_MAP = {
 
 
 function formatTime(unixtime) {
+    // examples: "4 hours ago", "2 months ago", "20 seconds ago"
     const now = new Date();
     const time = new Date(unixtime * 1000);
     const ONE_HOUR_IN_MS = 3600 * 1000;
@@ -31,9 +32,10 @@ function formatTime(unixtime) {
     const ONE_YEAR_IN_MS = 365 * ONE_DAY_IN_MS;
 
     let descriptive = Math.ceil((now.getTime() - unixtime * 1000) / ONE_YEAR_IN_MS) + " years ago";
-    if (time.getDate() === now.getDate() && time.getMonth() === now.getMonth()) {
-        // same day, return a time.
-        return time.toLocaleTimeString();
+    if (now.getTime() - unixtime * 1000 < 60000) {
+        return Math.ceil((now.getTime() - unixtime * 1000) / 1000) + " seconds ago";
+    } if (now.getTime() - unixtime * 1000 < ONE_HOUR_IN_MS) {
+        return Math.ceil((now.getTime() - unixtime * 1000) / 60000) + " minutes ago";
     } else if (now.getTime() - unixtime * 1000 <= ONE_DAY_IN_MS + 1000) {
         return Math.ceil((now.getTime() - unixtime * 1000) / ONE_HOUR_IN_MS) + " hours ago";
     } else if (now.getTime() - unixtime * 1000 <= ONE_WEEK_IN_MS + 1000) {
@@ -41,9 +43,32 @@ function formatTime(unixtime) {
     } else if (now.getTime() - unixtime * 1000 <= ONE_YEAR_IN_MS + 1000) {
         return Math.ceil((now.getTime() - unixtime * 1000) / ONE_WEEK_IN_MS) + " weeks ago";
     }
-    // TODO have a hints which show actual time when hover over it.
 
     return descriptive;
+}
+
+function asTwoDigit(num) {
+    return num < 10 ? "0" + num : num;
+}
+
+function formatDuration(seconds) {
+    // hh:mm:ss, example outputs: 1:10, 11:40:46
+    var hour = 0;
+    var min = 0;
+    var formated = "";
+    if (seconds >= 3600) {
+        //"hh:"
+        hour = Math.floor(seconds / 3600);
+        seconds = seconds - hour * 3600;
+        formated = formated + asTwoDigit(hour) + ":";
+    }
+    if (seconds >= 60) {
+        // "mm:"
+        min = Math.floor(seconds / 60);
+        seconds = seconds - min * 60;
+        formated = formated + asTwoDigit(min) + ":";
+    }
+    return formated + asTwoDigit(seconds);
 }
 
 
@@ -77,14 +102,17 @@ function getPageItems(lastPage, activePage, onPageChange) {
     return items;
 }
 
-
-
 function getRow(workflow, selected, onSelectOne) {
-    const videoTitle = workflow.video_uuid ?? "null"; // workflow.video_title
-    // Better time format.
-    // const create_at = new Date(workflow.create_at * 1000).toLocaleString();
+    const uuid = workflow.uuid;
+    const title = workflow.snippt.title ?? uuid;
+
     const create_at = formatTime(workflow.create_at);
-    const transcript = workflow.transcript_fmts.join(",") ?? "empty";
+    var transcript = "unavailable";
+    if (workflow.transcript !== null && workflow.transcript !== undefined) {
+        // TODO download-able url instead.
+        transcript = Object.keys(workflow.transcript);
+    }
+    const duration = workflow.snippt.duration ? formatDuration(workflow.snippt.duration) : "";
 
     const onCheckboxChange = (event)=> {
         onSelectOne(workflow.id, event);
@@ -105,10 +133,13 @@ function getRow(workflow, selected, onSelectOne) {
                 <time datetime={create_at}> {create_at}</time>
             </Col>
             <Col className="d-flex align-items-center justify-content-center"> 
-                <a href={"https://www.youtube.com/watch?v=" + workflow.video_uuid} target="_blank">
-                    {videoTitle}
+                <a href={"https://www.youtube.com/watch?v=" + uuid} target="_blank">
+                    {title}
                 </a>
             </Col >
+            <Col className="d-flex align-items-center justify-content-center">
+                {duration}
+            </Col>
             <Col className="d-flex align-items-center justify-content-center">
                 <a href="https://www.example.com" target="_blank">{transcript}</a>
             </Col>
@@ -124,8 +155,8 @@ function selectWorkflowByPage(activePage, workflows) {
     let selectedWorkflows = [];
     if (workflows !== null && workflows !== undefined) {
         const startIndex = Math.max(0, activePage * ROWS_PER_PAGE - ROWS_PER_PAGE); //incusive
-        const endIndex = Math.min(workflows.length, activePage * ROWS_PER_PAGE); // exclusive
-        console.log("start=" + startIndex + " end=" + endIndex);
+        const endIndex = Math.min(workflows.length, activePage * ROWS_PER_PAGE+1); // exclusive
+        console.log("start=" + startIndex + " end=" + endIndex + "for " + workflows.length + " workflows");
         selectedWorkflows = workflows.slice(startIndex, endIndex);
     }
     return selectedWorkflows;
@@ -221,6 +252,7 @@ function Transcripts(props) {
                         </Col>
                         <Col className="d-flex align-items-center justify-content-center">Created At</Col>
                         <Col className="d-flex align-items-center justify-content-center">Video</Col>
+                        <Col className="d-flex align-items-center justify-content-center">Duration</Col>
                         <Col className="d-flex align-items-center justify-content-center">Transcripts</Col>
                         <Col className="d-flex align-items-center justify-content-center">Progress</Col>
                     </Row>
