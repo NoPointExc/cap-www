@@ -53,9 +53,9 @@ function asTwoDigit(num) {
 
 function formatDuration(seconds) {
     // hh:mm:ss, example outputs: 1:10, 11:40:46
-    var hour = 0;
-    var min = 0;
-    var formated = "";
+    let hour = 0;
+    let min = 0;
+    let formated = "";
     if (seconds >= 3600) {
         //"hh:"
         hour = Math.floor(seconds / 3600);
@@ -102,15 +102,25 @@ function getPageItems(lastPage, activePage, onPageChange) {
     return items;
 }
 
+function downloadUrl(content, uuid, format) {
+    const blob = new Blob([content], { type: 'text/plain' });
+    const fileName = uuid + "." + format;
+    return <div>
+        <a href={URL.createObjectURL(blob)} download={fileName} target="_blank">{format}</a>
+    </div>;
+}
+
 function getRow(workflow, selected, onSelectOne) {
     const uuid = workflow.uuid;
     const title = workflow.snippt.title ?? uuid;
 
     const create_at = formatTime(workflow.create_at);
-    var transcript = "unavailable";
+    let transcriptUrls = <div></div>;
     if (workflow.transcript !== null && workflow.transcript !== undefined) {
-        // TODO download-able url instead.
-        transcript = Object.keys(workflow.transcript);
+        let formats = Object.keys(workflow.transcript);
+        transcriptUrls = formats.map(
+            f => (downloadUrl(workflow.transcript[f], uuid, f))
+        );
     }
     const duration = workflow.snippt.duration ? formatDuration(workflow.snippt.duration) : "";
 
@@ -141,7 +151,7 @@ function getRow(workflow, selected, onSelectOne) {
                 {duration}
             </Col>
             <Col className="d-flex align-items-center justify-content-center">
-                <a href="https://www.example.com" target="_blank">{transcript}</a>
+                {transcriptUrls}
             </Col>
             <Col className="d-flex align-items-center justify-content-center">
                 {STATUS_MAP[workflow.status]}
@@ -269,11 +279,6 @@ function Transcripts(props) {
             <div id="submit-form">
                 <Container>
                     <Row>
-                        <Col>
-                            <Button variant="primary" type="submit">
-                                Download Selected
-                            </Button>
-                        </Col>
                         <Col>
                             <Button variant="danger" type="submit">
                                 Delete Selected
