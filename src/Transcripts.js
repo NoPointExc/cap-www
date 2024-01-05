@@ -124,7 +124,7 @@ function getRow(workflow, selected, onSelectOne) {
     }
     const duration = workflow.snippt.duration ? formatDuration(workflow.snippt.duration) : "";
 
-    const onCheckboxChange = (event)=> {
+    const onCheckboxChange = (event) => {
         onSelectOne(workflow.id, event);
     };
 
@@ -299,7 +299,8 @@ function Transcripts(props) {
                         <Col className="d-flex align-items-center justify-content-center">Transcripts</Col>
                         <Col className="d-flex align-items-center justify-content-center">Progress</Col>
                     </Row>
-                    {
+                    {   
+                        // TODO having a loading page when loading.
                         selectWorkflowByPage(activePage, workflows).map((w) => (
                             getRow(w, selected, onSelectOne)
                         ))

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Nav from "react-bootstrap/Nav";
 
 
-
-
 function SideBar(props) {
+
+    const [activeTab, setActiveTab] = useState('#video')
 
     const navItems = [
         // { key: '#channel', text: '• Youtube Channel', },
@@ -12,9 +12,21 @@ function SideBar(props) {
         { key: '#transcripts', text: '• Your Transcripts' },
     ];
     
+    const onTabSelect = (selectedTab) => {
+        setActiveTab(selectedTab);
+        props.onTabSelect(selectedTab);
+    };
+
+    useEffect(() => {
+        const storedTab = localStorage.getItem('activeTab');
+        console.log(`set avctive page as ${storedTab}`);
+        if (storedTab) {
+            setActiveTab(storedTab);
+        }
+    }, []);
 
     return (
-        <Nav className="flex-column" variant="pills" defaultActiveKey="#channel" onSelect={props.onTabSelect}>
+        <Nav className="flex-column" variant="pills" activeKey={activeTab} defaultActiveKey='#video' onSelect={onTabSelect}>
             {navItems.map(
                 (item) => (
                     <div>

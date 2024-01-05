@@ -16,7 +16,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showTab: "#channel",
+            activeTab: "#video",
         };
     }
 
@@ -24,10 +24,20 @@ class App extends React.Component {
         cookies: instanceOf(Cookies).isRequired
     };
 
+    componentDidMount() {
+        const storedTab = localStorage.getItem('activeTab');
+        if (storedTab) {
+            this.setState({
+                activeTab: storedTab
+            });
+        }
+    }
+
     onTabSelect = (selectedTab) => {
         this.setState({
-            showTab: selectedTab
+            activeTab: selectedTab
         });
+        localStorage.setItem('activeTab', selectedTab);
     }
 
     render() {
@@ -43,7 +53,7 @@ class App extends React.Component {
                     <Container>
                         <Row>
                             <Col sm={2}><SideBar className="side" onTabSelect={this.onTabSelect}/></Col>
-                            {tabToContent.get(this.state.showTab)}
+                            {tabToContent.get(this.state.activeTab)}
                         </Row>
                     </Container>
                 </div>
