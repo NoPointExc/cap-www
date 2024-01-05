@@ -14,18 +14,18 @@ const ROWS_PER_PAGE = 10;
 const STATUS_MAP = {
     1: "5%", // TODO
     2: "10%", // LOCKED
-    3: "15%",// CLAIMED
+    3: "15%", // CLAIMED
     4: "50%", // WORKING
-    5: "Error",   // ERROR
+    5: "Error", // ERROR
     6: "Failed", //FAILED
-    7: "Done",    // DONE
+    7: "Done", // DONE
+    20: "DELETED" // DELETED
 };
 
 
 function formatTime(unixtime) {
     // examples: "4 hours ago", "2 months ago", "20 seconds ago"
     const now = new Date();
-    const time = new Date(unixtime * 1000);
     const ONE_HOUR_IN_MS = 3600 * 1000;
     const ONE_DAY_IN_MS = 24 * ONE_HOUR_IN_MS;
     const ONE_WEEK_IN_MS = 7 * ONE_DAY_IN_MS;
@@ -195,7 +195,6 @@ function Transcripts(props) {
         } else {
             const newSelected = new Set(selected);
             newSelected.delete(id);
-            // TODO disable the "select all" checkbox
             setSelected(newSelected);
         }
     }
@@ -228,7 +227,6 @@ function Transcripts(props) {
         event.preventDefault();
 
         if (selected.size > 0) {
-            // POST https://127.0.0.1:8000/workflow/delete 422 (Unprocessable Entity)
             const toDeleteIds = Array.from(selected);
             const url = `${DOMAIN}/workflow/delete`;
             await fetch(
@@ -243,7 +241,7 @@ function Transcripts(props) {
                     body: JSON.stringify(toDeleteIds)
                 },
             )
-            .then(response => {
+            .then(_response => {
                 const updatedWorkflows = workflows.filter((w) => !selected.has(w.id));
                 setWorkflows(updatedWorkflows);
                 setSelected(new Set());

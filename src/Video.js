@@ -21,7 +21,7 @@ function Video(props) {
     );
     
     const onFormSubmit = async (event) => {
-        event.preventDefault(); // Prevents the default form submission behavior
+        event.preventDefault();
 
         const arg_json_str = JSON.stringify(formData);
         const url = `${DOMAIN}/workflow/add?type=${VIDEO_WORKFLOW_TYPE}&args=${arg_json_str}`;
@@ -60,14 +60,14 @@ function Video(props) {
     return (
         <Form onSubmit={onFormSubmit}>
             <div class="video-url-form">
-                <Form.Label>Video Name</Form.Label>
+                <Form.Label>Youtube URL</Form.Label>
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">https://youtube.com/watch?v=</InputGroup.Text>
                     <Form.Control
                         name="video_uuid"
                         value={formData.video_uuid}
                         onChange={onFormChange}
-                        placeholder="HXDZ74cGz1g&t=174s"
+                        placeholder="HXDZ74cGz1g"
                         aria-label="video-url"
                         aria-describedby="basic-addon1"
                     />
@@ -149,8 +149,8 @@ function Video(props) {
                 <Container>
                     <Row>
                         <Col md={6}>
-                            <Button variant="success" type="submit">
-                                Transcript Now
+                            <Button variant="success" type="submit" disabled={formData.video_uuid === null}>
+                                Transcript
                             </Button>
                         </Col>
                     </Row>
