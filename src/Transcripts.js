@@ -195,6 +195,7 @@ function Transcripts(props) {
         } else {
             const newSelected = new Set(selected);
             newSelected.delete(id);
+            // TODO disable the "select all" checkbox
             setSelected(newSelected);
         }
     }
@@ -221,6 +222,39 @@ function Transcripts(props) {
         }
 
         setActivePage(newPage);
+    }
+
+    const onDelete = async (event) => {
+        event.preventDefault();
+
+        if (selected.size > 0) {
+            // POST https://127.0.0.1:8000/workflow/delete 422 (Unprocessable Entity)
+            const workflow_ids = Array.from(selected);
+            const url = `${DOMAIN}/workflow/delete`;
+            await fetch(
+                url,
+                {
+                    method: "POST",
+                    headers: {
+                        "accept": "application/json",
+                        "content-type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(workflow_ids)
+                },
+            )
+                .then(response => response.json())
+                .catch((error) => {
+                    console.log(`Failed to delete workflow with: ${url} and error: ${error}`);
+                });
+            
+
+            // reload but stay in the same page.
+            window.location.reload();
+        } else {
+            console.log("Nothing to delete");
+        }
+
     }
 
     useEffect(
@@ -253,7 +287,7 @@ function Transcripts(props) {
     );
     
     return (
-        <Form>
+        <Form onSubmit={onDelete}>
             <div id="transcripts-form">
                 <Container >
                     <Row>
@@ -276,7 +310,7 @@ function Transcripts(props) {
             <br/>
             <Pagination size="sm">{getPageItems(lastPage, activePage, onPageChange)}</Pagination>
             <br />
-            <div id="submit-form">
+            <div class="submit-form">
                 <Container>
                     <Row>
                         <Col>

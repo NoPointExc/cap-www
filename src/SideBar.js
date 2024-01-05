@@ -7,7 +7,7 @@ import Nav from "react-bootstrap/Nav";
 function SideBar(props) {
 
     const navItems = [
-        { key: '#channel', text: '• Youtube Channel', },
+        // { key: '#channel', text: '• Youtube Channel', },
         { key: '#video', text: '• Youtube Video' },
         { key: '#transcripts', text: '• Your Transcripts' },
     ];
