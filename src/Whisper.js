@@ -31,8 +31,6 @@ class App extends React.Component {
     }
 
     render() {
-        // TODO use react-router-dom instead to select sub page
-        // https://reactrouter.com/en/main/routers/picking-a-router
         let tabToContent = new Map();
         tabToContent.set("#channel", <Col sm={5}><Channel className="main" /></Col>);
         tabToContent.set("#video", <Col sm={5}><Video className="main" /></Col>);

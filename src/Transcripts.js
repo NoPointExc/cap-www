@@ -229,7 +229,7 @@ function Transcripts(props) {
 
         if (selected.size > 0) {
             // POST https://127.0.0.1:8000/workflow/delete 422 (Unprocessable Entity)
-            const workflow_ids = Array.from(selected);
+            const toDeleteIds = Array.from(selected);
             const url = `${DOMAIN}/workflow/delete`;
             await fetch(
                 url,
@@ -240,17 +240,18 @@ function Transcripts(props) {
                         "content-type": "application/json",
                     },
                     credentials: "include",
-                    body: JSON.stringify(workflow_ids)
+                    body: JSON.stringify(toDeleteIds)
                 },
             )
-                .then(response => response.json())
-                .catch((error) => {
-                    console.log(`Failed to delete workflow with: ${url} and error: ${error}`);
-                });
-            
-
-            // reload but stay in the same page.
-            window.location.reload();
+            .then(response => {
+                const updatedWorkflows = workflows.filter((w) => !selected.has(w.id));
+                setWorkflows(updatedWorkflows);
+                setSelected(new Set());
+                console.log(`Deleted workflows: ${selected}`);
+            })
+            .catch((error) => {
+                console.log(`Failed to delete workflow with: ${url} and error: ${error}`);
+            });
         } else {
             console.log("Nothing to delete");
         }
@@ -314,8 +315,8 @@ function Transcripts(props) {
                 <Container>
                     <Row>
                         <Col>
-                            <Button variant="danger" type="submit">
-                                Delete Selected
+                            <Button variant="danger" type="submit" disabled={selected.size === 0}>
+                                Delete {selected.size} selected transcripts
                             </Button>
                         </Col>
                     </Row>
