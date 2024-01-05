@@ -1,3 +1,5 @@
+import "./css/dot-spiner.css";
+
 import { DOMAIN } from "./lib/Config";
 import { VIDEO_WORKFLOW_TYPE } from "./lib/Constants";
 import Button from 'react-bootstrap/Button';
@@ -7,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import Pagination from 'react-bootstrap/Pagination';
 import React, { useEffect, useState } from "react";
 import Row from 'react-bootstrap/Row';
+
 
 const NEXT_PAGE = -1;
 const PREV_PAGE = 0;
@@ -184,6 +187,7 @@ function Transcripts(props) {
     const [selected, setSelected] = useState(new Set());
     const [activePage, setActivePage] = useState(1);
     const [workflows, setWorkflows] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const lastPage = getLastPage(workflows);
 
@@ -276,15 +280,29 @@ function Transcripts(props) {
                 if (workflows) {
                     workflows.sort((w1, w2) => w2.create_at - w1.create_at);
                     setWorkflows(workflows);
+                    setLoading(false);
                 }
             }
 
 
             fetchWorkflows()
+
         },
         [activePage]
     );
     
+    const workflowRows = selectWorkflowByPage(activePage, workflows).map(
+        (w) => (getRow(w, selected, onSelectOne))
+    );
+
+    const spiner = <div style={{ marginTop: '50px' }}>
+        <section class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </section>
+    </div>;
+
     return (
         <Form onSubmit={onDelete}>
             <div id="transcripts-form">
@@ -300,10 +318,7 @@ function Transcripts(props) {
                         <Col className="d-flex align-items-center justify-content-center">Progress</Col>
                     </Row>
                     {   
-                        // TODO having a loading page when loading.
-                        selectWorkflowByPage(activePage, workflows).map((w) => (
-                            getRow(w, selected, onSelectOne)
-                        ))
+                        loading ? spiner : workflowRows
                     }
                 </Container>
             </div>
