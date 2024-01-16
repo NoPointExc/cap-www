@@ -86,9 +86,9 @@ function getPageItems(lastPage, activePage, onPageChange) {
         let pageKey = page <= lastPage ? page : -1;
         let pageText = page;
         if (pageKey === PREV_PAGE) {
-            pageText = "Previous";
+            pageText = " < ";
         } else if (pageKey === NEXT_PAGE) {
-            pageText = "Next";
+            pageText = " > ";
         }
 
         let onPageClicked = (_event) => {
@@ -329,8 +329,8 @@ function Transcripts(props) {
                 <Container>
                     <Row>
                         <Col>
-                            <Button variant="danger" type="submit" disabled={selected.size === 0}>
-                                Delete {selected.size} selected transcripts
+                            <Button variant="success" type="submit" disabled={selected.size === 0}>
+                                Delete {selected.size} transcripts
                             </Button>
                         </Col>
                     </Row>
