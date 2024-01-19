@@ -1,11 +1,12 @@
+import { DOMAIN, LOGIN_USER } from "./lib/Config";
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies, setCookie } from 'react-cookie';
-import { DOMAIN, LOGIN_USER } from "./lib/Config";
-import PurchaseModel from "./PurchaseModel"
+import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import PurchaseModel from "./PurchaseModel"
 import React from "react";
 
 
@@ -52,6 +53,9 @@ class MyNavBar extends React.Component {
             const user = await this.fetchUserStatus();
             if (user === null) {
                 setCookie(LOGIN_USER, null);
+                this.setState(
+                    { loggedInUser: null, credit: 0 }
+                )
             } else {
                 this.setState(
                     { loggedInUser: user.name, credit: user.credit}
@@ -97,6 +101,7 @@ class MyNavBar extends React.Component {
             );
         }
         if (this.state.credit !== -1) {
+            // TODO better workding for remidning credit??
             credit_info = `Balance: ${this.state.credit} mins`;
         }
 
