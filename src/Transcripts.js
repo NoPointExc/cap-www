@@ -329,7 +329,7 @@ function Transcripts(props) {
                 <Container>
                     <Row>
                         <Col>
-                            <Button variant="success" type="submit" disabled={selected.size === 0}>
+                            <Button variant="danger" type="submit" disabled={selected.size === 0}>
                                 Delete {selected.size} transcripts
                             </Button>
                         </Col>

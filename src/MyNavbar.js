@@ -1,7 +1,7 @@
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies, setCookie } from 'react-cookie';
 import { DOMAIN, LOGIN_USER } from "./lib/Config";
-import Button from "react-bootstrap/Button";
+import PurchaseModel from "./PurchaseModel"
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -22,6 +22,7 @@ class MyNavBar extends React.Component {
             showUser: false,
             loggedInUser: null,
             credit: -1,
+            showPurchaseModel: false,
         };
     }
 
@@ -61,6 +62,10 @@ class MyNavBar extends React.Component {
 
 
     render() {
+
+        const handleShowPurchasePage = () => this.setState({ showPurchaseModel: true });
+        const handleHidePurchasePage = () => this.setState({ showPurchaseModel: false });
+
         let accountButton = (
             <Nav.Item bg="light" variant="light">
                 <Button
@@ -85,10 +90,13 @@ class MyNavBar extends React.Component {
                     <NavDropdown.Item as="a" href={`${DOMAIN}/user/logout`}>
                         Sign out
                     </NavDropdown.Item>
+                    <NavDropdown.Item onClick={handleShowPurchasePage}>
+                        Buy credits
+                    </NavDropdown.Item>
                 </NavDropdown>
             );
         }
-        if (this.state.credit != -1) {
+        if (this.state.credit !== -1) {
             credit_info = `Balance: ${this.state.credit} mins`;
         }
 
@@ -103,6 +111,10 @@ class MyNavBar extends React.Component {
                         {accountButton}
                     </Container>
                 </Navbar>
+                <PurchaseModel
+                    show={this.state.showPurchaseModel}
+                    handleOnClose={handleHidePurchasePage}
+                />
             </div>
 
         );
