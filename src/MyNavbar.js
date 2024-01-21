@@ -7,6 +7,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import PurchaseModel from "./PurchaseModel"
+import PaymentStatusModel from "./PaymentStatusModel"
 import React from "react";
 
 
@@ -120,6 +121,7 @@ class MyNavBar extends React.Component {
                     show={this.state.showPurchaseModel}
                     handleOnClose={handleHidePurchasePage}
                 />
+                <PaymentStatusModel/>
             </div>
 
         );

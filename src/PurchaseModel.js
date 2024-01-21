@@ -7,7 +7,8 @@ import { DOMAIN, COST_PER_100_MIN } from "./lib/Config";
 
 const DEFAULT_HOURS = 5;
 
-const PurchaseModel = (props) => {
+
+function PurchaseModel(props) {
     const [hours, setHours] = useState(DEFAULT_HOURS);
 
     const handleOnHourChange = (event) => {
