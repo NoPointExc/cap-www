@@ -22,7 +22,9 @@ const STATUS_MAP = {
     5: "Error", // ERROR
     6: "Failed", //FAILED
     7: "Done", // DONE
+    8: "No Enough credits", // NO_CREDIT
     20: "DELETED" // DELETED
+
 };
 
 
