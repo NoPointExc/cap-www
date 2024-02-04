@@ -4,7 +4,7 @@ import { DOMAIN } from "../lib/Config";
 
 export default function RetryButton(props) {
     const handleOnRetry = async () => {
-        const url = `${DOMAIN}/workflow/retry?id=${props.workflow_id}`;
+        const url = `${DOMAIN}/workflow/retry?id=${props.id}`;
         const rsp = await fetch(
             url,
             {

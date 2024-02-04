@@ -136,7 +136,7 @@ function getRow(workflow, selected, onSelectOne) {
                 {STATUS_MAP[workflow.status]}
             </Col>
             <Col className={ColClassName}>
-                <RetryButton workflow_id={uuid}/>
+                <RetryButton workflow_id={workflow.id}/>
             </Col>
         </Row>
         <br/>
