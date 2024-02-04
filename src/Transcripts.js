@@ -10,6 +10,10 @@ import Pagination from 'react-bootstrap/Pagination';
 import React, { useEffect, useState } from "react";
 import Row from 'react-bootstrap/Row';
 
+import DownloadButton from './transcripts/DownloadButton';
+import RetryButton from "./transcripts/RetryButton";
+import ReadableTime from "./transcripts/ReadableTime"
+
 
 const NEXT_PAGE = -1;
 const PREV_PAGE = 0;
@@ -24,33 +28,10 @@ const STATUS_MAP = {
     7: "Done", // DONE
     8: "No Enough credits", // NO_CREDIT
     20: "DELETED" // DELETED
-
 };
 
+const ColClassName = "d-flex align-items-center justify-content-center";
 
-function formatTime(unixtime) {
-    // examples: "4 hours ago", "2 months ago", "20 seconds ago"
-    const now = new Date();
-    const ONE_HOUR_IN_MS = 3600 * 1000;
-    const ONE_DAY_IN_MS = 24 * ONE_HOUR_IN_MS;
-    const ONE_WEEK_IN_MS = 7 * ONE_DAY_IN_MS;
-    const ONE_YEAR_IN_MS = 365 * ONE_DAY_IN_MS;
-
-    let descriptive = Math.ceil((now.getTime() - unixtime * 1000) / ONE_YEAR_IN_MS) + " years ago";
-    if (now.getTime() - unixtime * 1000 < 60000) {
-        return Math.ceil((now.getTime() - unixtime * 1000) / 1000) + " seconds ago";
-    } if (now.getTime() - unixtime * 1000 < ONE_HOUR_IN_MS) {
-        return Math.ceil((now.getTime() - unixtime * 1000) / 60000) + " minutes ago";
-    } else if (now.getTime() - unixtime * 1000 <= ONE_DAY_IN_MS + 1000) {
-        return Math.ceil((now.getTime() - unixtime * 1000) / ONE_HOUR_IN_MS) + " hours ago";
-    } else if (now.getTime() - unixtime * 1000 <= ONE_WEEK_IN_MS + 1000) {
-        return Math.ceil((now.getTime() - unixtime * 1000) / ONE_DAY_IN_MS) + " days ago";
-    } else if (now.getTime() - unixtime * 1000 <= ONE_YEAR_IN_MS + 1000) {
-        return Math.ceil((now.getTime() - unixtime * 1000) / ONE_WEEK_IN_MS) + " weeks ago";
-    }
-
-    return descriptive;
-}
 
 function asTwoDigit(num) {
     return num < 10 ? "0" + num : num;
@@ -107,24 +88,15 @@ function getPageItems(lastPage, activePage, onPageChange) {
     return items;
 }
 
-function downloadUrl(content, uuid, format) {
-    const blob = new Blob([content], { type: 'text/plain' });
-    const fileName = uuid + "." + format;
-    return <div>
-        <a href={URL.createObjectURL(blob)} download={fileName} target="_blank">{format}</a>
-    </div>;
-}
-
 function getRow(workflow, selected, onSelectOne) {
     const uuid = workflow.uuid;
     const title = workflow.snippt.title ?? uuid;
 
-    const create_at = formatTime(workflow.create_at);
     let transcriptUrls = <div></div>;
     if (workflow.transcript !== null && workflow.transcript !== undefined) {
         let formats = Object.keys(workflow.transcript);
         transcriptUrls = formats.map(
-            f => (downloadUrl(workflow.transcript[f], uuid, f))
+            f => <DownloadButton content={workflow.transcript[f]} uuid={uuid} format={f}  />
         );
     }
     const duration = workflow.snippt.duration ? formatDuration(workflow.snippt.duration) : "";
@@ -133,9 +105,10 @@ function getRow(workflow, selected, onSelectOne) {
         onSelectOne(workflow.id, event);
     };
 
+
     return <div>
         <Row>
-            <Col xs={1}>
+            <Col className={ColClassName}>
                 <Form.Check
                     inline name="group1"
                     type="checkbox"
@@ -144,22 +117,26 @@ function getRow(workflow, selected, onSelectOne) {
                     onChange={onCheckboxChange}
                 />
             </Col>
-            <Col className="d-flex align-items-center justify-content-center">
-                <time datetime={create_at}> {create_at}</time>
+            <Col className={ColClassName}>
+                <ReadableTime unixtime={workflow.create_at + 1}></ReadableTime>
+                {/* <time datetime={create_at}> {create_at}</time> */}
             </Col>
-            <Col className="d-flex align-items-center justify-content-center"> 
+            <Col className={ColClassName}> 
                 <a href={"https://www.youtube.com/watch?v=" + uuid} target="_blank">
                     {title}
                 </a>
             </Col >
-            <Col className="d-flex align-items-center justify-content-center">
+            <Col className={ColClassName}>
                 {duration}
             </Col>
-            <Col className="d-flex align-items-center justify-content-center">
+            <Col className={ColClassName}>
                 {transcriptUrls}
             </Col>
-            <Col className="d-flex align-items-center justify-content-center">
+            <Col className={ColClassName}>
                 {STATUS_MAP[workflow.status]}
+            </Col>
+            <Col className={ColClassName}>
+                <RetryButton workflow_id={uuid}/>
             </Col>
         </Row>
         <br/>
@@ -310,14 +287,15 @@ function Transcripts(props) {
             <div id="transcripts-form">
                 <Container >
                     <Row>
-                        <Col xs={1}>
+                        <Col className={ColClassName}>
                             <Form.Check inline name="group1" type="checkbox" id="#selectAll" onChange={onSelectAll}/>
                         </Col>
-                        <Col className="d-flex align-items-center justify-content-center">Created At</Col>
-                        <Col className="d-flex align-items-center justify-content-center">Video</Col>
-                        <Col className="d-flex align-items-center justify-content-center">Duration</Col>
-                        <Col className="d-flex align-items-center justify-content-center">Transcripts</Col>
-                        <Col className="d-flex align-items-center justify-content-center">Progress</Col>
+                        <Col className={ColClassName}>Created At</Col>
+                        <Col className={ColClassName}>Video</Col>
+                        <Col className={ColClassName}>Duration</Col>
+                        <Col className={ColClassName}>Transcripts</Col>
+                        <Col className={ColClassName}>Progress</Col>
+                        <Col className={ColClassName}>Retry</Col>
                     </Row>
                     {   
                         loading ? spiner : workflowRows

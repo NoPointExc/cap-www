@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
 
@@ -30,11 +30,11 @@ function PaymentStatusModel(props) {
     let title = "Payment Error";
     // TODO having a model body here as well.
     if (payment !== null) {
-        if (payment.status == "SUCCESS") {
+        if (payment.status === "SUCCESS") {
             title = "Payment success!";
-        } else if (payment.status == "CANCELED") {
+        } else if (payment.status === "CANCELED") {
             title = "Payment Canceled";
-        } else if (payment.status = "FAILED") {
+        } else if (payment.status === "FAILED") {
             title = "Payment Failed. Ops!";
         }
     }
