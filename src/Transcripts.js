@@ -13,7 +13,7 @@ import Row from 'react-bootstrap/Row';
 import DownloadButton from './transcripts/DownloadButton';
 import RetryButton from "./transcripts/RetryButton";
 import ReadableTime from "./transcripts/ReadableTime"
-
+import { LoadingIcon, loadingGif2 } from './Icons';
 
 const NEXT_PAGE = -1;
 const PREV_PAGE = 0;
@@ -92,14 +92,15 @@ function getRow(workflow, selected, onSelectOne) {
     const uuid = workflow.uuid;
     const title = workflow.snippt.title ?? uuid;
 
-    let transcriptUrls = <div></div>;
-    if (workflow.transcript !== null && workflow.transcript !== undefined) {
-        let formats = Object.keys(workflow.transcript);
+    let transcriptUrls = <div>{LoadingIcon}</div>;
+    const transcript = workflow.transcript;
+    if (transcript !== null && transcript !== undefined && Object.keys(transcript).length !== 0) {
+        let formats = Object.keys(transcript);
         transcriptUrls = formats.map(
-            f => <DownloadButton content={workflow.transcript[f]} uuid={uuid} format={f}  />
+            f => <DownloadButton content={transcript[f]} uuid={uuid} format={f}  />
         );
     }
-    const duration = workflow.snippt.duration ? formatDuration(workflow.snippt.duration) : "";
+    const duration = workflow.snippt.duration ? formatDuration(workflow.snippt.duration) : <div>{LoadingIcon}</div>;;
 
     const onCheckboxChange = (event) => {
         onSelectOne(workflow.id, event);
