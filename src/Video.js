@@ -106,8 +106,8 @@ function Video(props) {
                 >
                     <option selected value={null}>auto-detect</option>
                     <option value="en">English</option>
-                    <option value="zh">简体中文</option>
-                    <option value="zh-tw">繁體中文</option>
+                    <option value="zh">中文</option>
+                    <option value="es">español</option>
                 </Form.Select>
                 <br />
                 <Form.Text id="language-help" muted>
