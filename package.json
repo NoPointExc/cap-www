@@ -30,6 +30,8 @@
     "start-safe": "export HTTPS=true&&SSL_CRT_FILE=cert.pem&&SSL_KEY_FILE=key.pem react-scripts start",
     "start": "react-scripts start",
     "build": "react-scripts build; cp -rf ~/Documents/github/cap/www/build ~/Documents/github/cap/proxy/static/.",
+    "tar": "react-scripts build; tar -cvzf static.tar.gz ./build",
+    "scp": "scp static.tar.gz $DEV:/root/github/tmp",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
